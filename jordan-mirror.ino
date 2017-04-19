@@ -13,6 +13,11 @@ SYSTEM_MODE(MANUAL);
 unsigned long tDuration = 30000;
 unsigned long tActivated;
 
+//Input timeout
+unsigned long inputTripTimeout = 15000;
+unsigned long lastInputTriggerTime;
+bool triggered = false;
+
 //Object reference to relay board.
 NCD2Relay relay;
 
@@ -84,8 +89,13 @@ void loop() {
 					switch(inputNumber){
 					    case 1 : 
 					    //Input 1 tripped so send transmission to other units and execute command locally
-                        Serial1.write(1);
-                        command(1);
+					    //Check to see if the command to trigger has already fired, if so do not send again.
+					    if(!triggered){
+					        triggered = true;
+					        lastInputTriggerTime = millis();
+					        Serial1.write(1);
+                            command(1);
+                        }
                         break;
                         case 2 :
                         //Input 2 tripped so turn off relay, then go to soft AP mode for timer configuration.
@@ -105,6 +115,10 @@ void loop() {
 			if(tripped[a]){
 				tripped[a] = false;
 				int inputNumber = a+1;
+				//Check to see if input 1 opened, if so clear triggered flag
+				if(inputNumber == 1){
+				    triggered = false;
+				}
 			}
 		}
 		a++;
