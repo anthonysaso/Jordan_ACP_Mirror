@@ -40,6 +40,8 @@ void parseReceivedData();
 byte receiveBuffer[256];
 unsigned long tOut = 3000;
 
+int moduleRSSI = 0;
+
 //Soft AP variables.
 struct Page
 {
@@ -73,12 +75,17 @@ void setup() {
     }
     loadDevicesFromMemory();
     
+    if(Particle.connected()){
+        Particle.variable("RSSI", moduleRSSI);
+    }
+    
 }
 
 void loop() {
     //Check for command received through S3B
     if(Serial1.available() > 0){
         parseReceivedData();
+        moduleRSSI = wireless.getRSSI();
     }
     
     //read on boad inputs and react to them closing.
