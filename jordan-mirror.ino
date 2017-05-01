@@ -206,7 +206,13 @@ void myPage(const char* url, ResponseCallback* cb, void* cbArg, Reader* body, Wr
 				int duration = parsing.toInt();
 				if(duration > 10 && duration < 121){
 				    Serial.printf("Timer duration: %i\n", duration);
-				    Serial1.write(duration);
+				    //Send command to remote units.
+                    for(int i = 0; i < nDevices; i++){
+                        byte commandData[1] = {(byte)duration};
+                        if(!wireless.transmit(deviceAddresses[i], commandData, 1)){
+                            //Handle failed transmission
+                        }
+                    }
 				    EEPROM.put(0, duration);
 				    delay(1000);
 				}
