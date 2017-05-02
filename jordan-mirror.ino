@@ -146,7 +146,10 @@ void command(int id, bool transmit){
         if(!wireless.transmit(deviceAddresses[i], commandData, 1)){
             //Handle failed transmission
             if(Particle.connected()){
-                Particle.publish("TxFail", hexString(deviceAddresses[i], 8));
+                char buffer[25];
+                hexString(deviceAddresses[i], 8, buffer);
+                Particle.publish("TxFail", buffer);
+                Serial.printf("Transmission failed to: %s\n",buffer);
             }
             
         }
@@ -330,15 +333,8 @@ void hexStringToHex(String s, byte* buffer) {
     }
 }
 
-String hexString(unsigned char data[],  size_t len){
-	const char hex[] = "0123456789ABCDEF";
-	String s;
-	for(size_t i = 0; i < len; i++){
-		char c = data[i];
-		char hexDigit = hex[(c >> 4) & 0xF];
-		s += hexDigit+" ";
-	}
-	return s;
+void hexString(byte* data,  size_t len, char buffer[]){
+	sprintf(buffer, "%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X", data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
 }
 
 void loadDevicesFromMemory(){
