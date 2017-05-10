@@ -141,18 +141,23 @@ void command(int id, bool transmit){
         tActivated = millis();
     }
     //Send command to remote units.
-    for(int i = 0; i < nDevices; i++){
-        byte commandData[1] = {1};
-        if(!wireless.transmit(deviceAddresses[i], commandData, 1)){
-            //Handle failed transmission
-            if(Particle.connected()){
-                char buffer[25];
-                hexString(deviceAddresses[i], 8, buffer);
-                Particle.publish("TxFail", buffer);
-                Serial.printf("Transmission failed to: %s\n",buffer);
-            }
+    if(transmit){
+        Serial.printf("nDevices = %i\n", nDevices);
+        for(int i = 0; i < nDevices; i++){
+            byte commandData[1] = {1};
+            if(!wireless.transmit(deviceAddresses[i], commandData, 1)){
+                //Handle failed transmission
+                if(Particle.connected()){
+                    char buffer[25];
+                    hexString(deviceAddresses[i], 8, buffer);
+                    String info = String(buffer);
+                    Particle.publish("TxFail", info);
+                    Serial.printf("Transmission failed to: %s\n",buffer);
+                }
+                // Serial.println("Transmission failed");
             
-        }
+            }
+    }
     }
 }
 
@@ -214,6 +219,10 @@ void myPage(const char* url, ResponseCallback* cb, void* cbArg, Reader* body, Wr
                         byte commandData[1] = {(byte)duration};
                         if(!wireless.transmit(deviceAddresses[i], commandData, 1)){
                             //Handle failed transmission
+                        }else{
+                            char dID[25];
+                            hexString(deviceAddresses[i], 8, dID);
+                            Serial.printf("Transmission failed to device: %s\n", dID);
                         }
                     }
 				    EEPROM.put(0, duration);
@@ -408,6 +417,7 @@ void parseReceivedData(){
             command(1, false);
         }else{
             if(receivedData[0] > 10 && receivedData[0] < 120){
+                Serial.printf("storing new timer duration of %i seconds\n", receivedData[0]);
                 tConfig(receivedData[0]);
             }
         }
