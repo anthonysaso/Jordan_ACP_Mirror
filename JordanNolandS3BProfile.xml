@@ -12,23 +12,23 @@
       <setting command="CE">0</setting>
       <setting command="BH">0</setting>
       <setting command="NH">7</setting>
-      <setting command="MR">1</setting>
+      <setting command="MR">6</setting>
       <setting command="NN">3</setting>
       <setting command="DH">0</setting>
       <setting command="DL">FFFF</setting>
       <setting command="TO">C0</setting>
       <setting command="NI">0x20</setting>
       <setting command="NT">82</setting>
-      <setting command="NO">0</setting>
+      <setting command="NO">5</setting>
       <setting command="CI">11</setting>
-      <setting command="EE">1</setting>
-      <setting command="KY">4a6f7264616e204e6f6c616e64</setting>
+      <setting command="EE">0</setting>
+      <setting command="KY"></setting>
       <setting command="BD">7</setting>
       <setting command="NB">0</setting>
       <setting command="SB">0</setting>
       <setting command="RO">3</setting>
       <setting command="FT">13F</setting>
-      <setting command="AP">0</setting>
+      <setting command="AP">1</setting>
       <setting command="AO">0</setting>
       <setting command="D0">1</setting>
       <setting command="D1">0</setting>
@@ -64,7 +64,7 @@
       <setting command="CC">2B</setting>
       <setting command="CT">64</setting>
       <setting command="GT">3E8</setting>
-      <setting command="DD"></setting>
+      <setting command="DD">B0000</setting>
     </settings>
   </profile>
 </data>
