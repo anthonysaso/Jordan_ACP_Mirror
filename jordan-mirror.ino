@@ -212,7 +212,7 @@ void myPage(const char* url, ResponseCallback* cb, void* cbArg, Reader* body, Wr
 				parsing = parsing.substring(start+9);
 				
 				int duration = parsing.toInt();
-				if(duration > 10 && duration < 121){
+				if(duration > 9 && duration < 121){
 				    Serial.printf("Timer duration: %i\n", duration);
 				    //Send command to remote units.
                     for(int i = 0; i < nDevices; i++){
