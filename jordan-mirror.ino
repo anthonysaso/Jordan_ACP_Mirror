@@ -219,10 +219,11 @@ void myPage(const char* url, ResponseCallback* cb, void* cbArg, Reader* body, Wr
                         byte commandData[1] = {(byte)duration};
                         if(!wireless.transmit(deviceAddresses[i], commandData, 1)){
                             //Handle failed transmission
-                        }else{
-                            char dID[25];
+				char dID[25];
                             hexString(deviceAddresses[i], 8, dID);
                             Serial.printf("Transmission failed to device: %s\n", dID);
+                        }else{
+                            //Transmission Succsess.
                         }
                     }
 				    EEPROM.put(0, duration);
